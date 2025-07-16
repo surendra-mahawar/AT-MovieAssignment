@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        bindViewModel()
+        viewModel.delegate = self
         viewModel.fetchMovies()
     }
     
@@ -40,16 +40,6 @@ class ViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-    }
-    
-    private func bindViewModel() {
-        viewModel.onMoviesUpdated = { [weak self] in
-            self?.tableView.reloadData()
-        }
-        
-        viewModel.onError = { [weak self] errorMessage in
-            self?.showAlert(message: errorMessage)
-        }
     }
     
     private func showAlert(message: String) {
@@ -79,5 +69,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
        return UITableView.automaticDimension
+    }
+}
+
+extension ViewController: MovieListViewModelDelegate {
+    func onMoviesUpdated() {
+        tableView.reloadData()
+    }
+    
+    func onError(errorMessage: String) {
+        showAlert(message: errorMessage)
     }
 }

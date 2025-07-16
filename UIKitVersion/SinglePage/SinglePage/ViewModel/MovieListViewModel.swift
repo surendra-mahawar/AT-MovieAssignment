@@ -7,13 +7,16 @@
 
 import Foundation
 
+protocol MovieListViewModelDelegate {
+    func onMoviesUpdated()
+    func onError(errorMessage: String)
+}
+
 class MovieListViewModel {
 
     // MARK: - Properties
     var movies: [Search] = []
-
-    var onMoviesUpdated: (() -> Void)?
-    var onError: ((String) -> Void)?
+    var delegate: MovieListViewModelDelegate?
 
     // MARK: - API Call
     func fetchMovies() {
@@ -22,9 +25,10 @@ class MovieListViewModel {
                 switch result {
                 case .success(let response):
                     self?.movies = response.search ?? []
-                    self?.onMoviesUpdated?()
+                    self?.delegate?.onMoviesUpdated()
                 case .failure(let error):
-                    self?.onError?(self?.mapError(error) ?? "error")
+                    let errorMessage = self?.mapError(error) ?? "error"
+                    self?.delegate?.onError(errorMessage: errorMessage)
                 }
             }
         }
