@@ -21,8 +21,18 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        viewModel.delegate = self
+    
         viewModel.fetchMovies()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleMoviesUpdated), name: .onMoviesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleMovieError(_:)), name: .onError, object: nil)
+    }
+    
+    @objc private func handleMoviesUpdated() {
+        tableView.reloadData()
+    }
+    
+    @objc private func handleMovieError(_ notification: Notification) {
+        showAlert(message: notification.object as? String ?? "error")
     }
     
     private func configureUI() {
@@ -69,15 +79,5 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
        return UITableView.automaticDimension
-    }
-}
-
-extension ViewController: MovieListViewModelDelegate {
-    func onMoviesUpdated() {
-        tableView.reloadData()
-    }
-    
-    func onError(errorMessage: String) {
-        showAlert(message: errorMessage)
     }
 }

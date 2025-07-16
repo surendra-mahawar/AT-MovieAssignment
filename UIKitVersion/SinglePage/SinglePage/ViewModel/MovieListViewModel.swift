@@ -7,16 +7,15 @@
 
 import Foundation
 
-protocol MovieListViewModelDelegate {
-    func onMoviesUpdated()
-    func onError(errorMessage: String)
+extension Notification.Name {
+    static let onMoviesUpdated = Notification.Name("onMoviesUpdated")
+    static let onError = Notification.Name("onError")
 }
 
 class MovieListViewModel {
 
     // MARK: - Properties
     var movies: [Search] = []
-    var delegate: MovieListViewModelDelegate?
 
     // MARK: - API Call
     func fetchMovies() {
@@ -25,10 +24,10 @@ class MovieListViewModel {
                 switch result {
                 case .success(let response):
                     self?.movies = response.search ?? []
-                    self?.delegate?.onMoviesUpdated()
+                    NotificationCenter.default.post(name: .onMoviesUpdated, object: nil)
                 case .failure(let error):
-                    let errorMessage = self?.mapError(error) ?? "error"
-                    self?.delegate?.onError(errorMessage: errorMessage)
+                    let errorMessage = self?.mapError(error)
+                    NotificationCenter.default.post(name: .onError, object: errorMessage)
                 }
             }
         }
