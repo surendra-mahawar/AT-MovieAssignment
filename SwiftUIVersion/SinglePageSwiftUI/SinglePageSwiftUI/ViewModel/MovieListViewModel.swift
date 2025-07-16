@@ -5,7 +5,7 @@
 //  Created by Surendra Mahawar on 14/07/25.
 //
 
-import Foundation
+import Combine
 
 @MainActor
 class MovieListViewModel: ObservableObject {
