@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 final class NetworkManager {
     
@@ -13,35 +14,26 @@ final class NetworkManager {
     
     private init() {}
     
-    func fetchData(completion: @escaping (Result<MovieResponse, DataError>) -> Void) {
+    func fetchData() -> AnyPublisher<MovieResponse, DataError> {
         let urlString = "https://www.omdbapi.com/?apikey=2c0d1dab&s=dark"
         guard let url = URL(string: urlString) else {
-            completion(.failure(.badURL))
-            return
+            return Fail(error: DataError.badURL).eraseToAnyPublisher()
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(.networkError(error)))
-                return
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: MovieResponse.self, decoder: JSONDecoder())
+            .mapError { error in
+                if error is DecodingError {
+                    return DataError.decodingError
+                } else {
+                    return DataError.networkError(error)
+                }
             }
-
-            guard let data = data else {
-                completion(.failure(.noData))
-                return
-            }
-
-            do {
-                let decoded = try JSONDecoder().decode(MovieResponse.self, from: data)
-                completion(.success(decoded))
-            } catch {
-                completion(.failure(.decodingError))
-            }
-        }
-        task.resume()
+            .eraseToAnyPublisher()
     }
 }
 

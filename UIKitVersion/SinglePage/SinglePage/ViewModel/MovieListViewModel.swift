@@ -6,31 +6,29 @@
 //
 
 import Foundation
+import Combine
 
-extension Notification.Name {
-    static let onMoviesUpdated = Notification.Name("onMoviesUpdated")
-    static let onError = Notification.Name("onError")
-}
-
-class MovieListViewModel {
+class MovieListViewModel: ObservableObject {
 
     // MARK: - Properties
-    var movies: [Search] = []
+    @Published var movies: [Search] = []
+    @Published var errorMessage: String = ""
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - API Call
     func fetchMovies() {
-        NetworkManager.shared.fetchData { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    self?.movies = response.search ?? []
-                    NotificationCenter.default.post(name: .onMoviesUpdated, object: nil)
+        NetworkManager.shared.fetchData()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished: break
                 case .failure(let error):
-                    let errorMessage = self?.mapError(error)
-                    NotificationCenter.default.post(name: .onError, object: errorMessage)
+                    self?.errorMessage = self?.mapError(error) ?? "error"
                 }
+            } receiveValue: { response in
+                self.movies = response.search ?? []
             }
-        }
+            .store(in: &cancellables)
     }
 
     private func mapError(_ error: DataError) -> String {

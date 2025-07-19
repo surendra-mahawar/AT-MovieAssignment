@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 class ViewController: UIViewController {
 
     private let viewModel = MovieListViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -21,18 +23,25 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-    
+        bindViewModel()
         viewModel.fetchMovies()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleMoviesUpdated), name: .onMoviesUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleMovieError(_:)), name: .onError, object: nil)
     }
     
-    @objc private func handleMoviesUpdated() {
-        tableView.reloadData()
-    }
-    
-    @objc private func handleMovieError(_ notification: Notification) {
-        showAlert(message: notification.object as? String ?? "error")
+    private func bindViewModel() {
+        viewModel.$movies
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .filter { !$0.isEmpty }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                self?.showAlert(message: error)
+            }
+            .store(in: &cancellables)
     }
     
     private func configureUI() {

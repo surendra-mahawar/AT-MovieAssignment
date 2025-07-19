@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SinglePageStoryBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="76k-Fr-3VL">
+                                <rect key="frame" x="0.0" y="20" width="393" height="96"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Movie List" leftItemsSupplementBackButton="YES" id="EzE-i6-r8x" userLabel="Movie List"/>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Eff-AA-q7S">
+                                <rect key="frame" x="10" y="222" width="373" height="562"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" restorationIdentifier="MovieCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="99.99999988079071" id="Z9A-HV-02o" customClass="MoviewTableViewCell" customModule="SinglePageStoryBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="373" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Z9A-HV-02o" id="Dqq-kI-FqS">
+                                            <rect key="frame" x="0.0" y="0.0" width="373" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8yR-WI-jOI">
+                                                    <rect key="frame" x="10" y="10" width="120" height="80"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="120" id="Og4-TU-7qV"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFS-gH-Dd8">
+                                                    <rect key="frame" x="150" y="9.9999999999999982" width="203" height="20.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8yR-WI-jOI" firstAttribute="top" secondItem="Dqq-kI-FqS" secondAttribute="top" constant="10" id="4dM-pW-D6S"/>
+                                                <constraint firstItem="LFS-gH-Dd8" firstAttribute="top" secondItem="8yR-WI-jOI" secondAttribute="top" id="9S6-Qa-Ek7"/>
+                                                <constraint firstAttribute="trailing" secondItem="LFS-gH-Dd8" secondAttribute="trailing" constant="20" id="RYH-7h-jz6"/>
+                                                <constraint firstAttribute="bottom" secondItem="8yR-WI-jOI" secondAttribute="bottom" constant="10" id="cA2-AO-dD7"/>
+                                                <constraint firstItem="8yR-WI-jOI" firstAttribute="leading" secondItem="Dqq-kI-FqS" secondAttribute="leading" constant="10" id="ibn-5E-BSj"/>
+                                                <constraint firstItem="LFS-gH-Dd8" firstAttribute="leading" secondItem="8yR-WI-jOI" secondAttribute="trailing" constant="20" id="pbc-co-6FS"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cardImageView" destination="8yR-WI-jOI" id="ioA-cq-kjN"/>
+                                            <outlet property="titleLabel" destination="LFS-gH-Dd8" id="JGC-5a-6Sz"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Eff-AA-q7S" secondAttribute="trailing" constant="10" id="5nl-kt-IVl"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Eff-AA-q7S" secondAttribute="bottom" id="RdJ-rF-idL"/>
+                            <constraint firstItem="Eff-AA-q7S" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="em5-ag-PVu"/>
+                            <constraint firstItem="Eff-AA-q7S" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="60" id="gRE-Eu-2cP"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="movieTableView" destination="Eff-AA-q7S" id="w6e-8v-FSh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-451.14503816793894" y="14.788732394366198"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
